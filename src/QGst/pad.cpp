@@ -22,6 +22,7 @@
 #include <QtCore/QDebug>
 #include <gst/gstpad.h>
 #include <gst/gstutils.h>
+#include <gst/gstcompat.h>
 
 namespace QGst {
 
@@ -72,7 +73,7 @@ bool Pad::unlink(const PadPtr & sink)
 
 CapsPtr Pad::caps() const
 {
-    return CapsPtr::wrap(gst_pad_get_caps_reffed(object<GstPad>()), false);
+    return CapsPtr::wrap(gst_pad_query_caps(object<GstPad>(),NULL), false);
 }
 
 CapsPtr Pad::allowedCaps() const
@@ -82,7 +83,7 @@ CapsPtr Pad::allowedCaps() const
 
 CapsPtr Pad::negotiatedCaps() const
 {
-    return CapsPtr::wrap(gst_pad_get_negotiated_caps(object<GstPad>()), false);
+    return CapsPtr::wrap(gst_pad_get_current_caps(object<GstPad>()), false);
 }
 
 bool Pad::setCaps(const CapsPtr & caps)
@@ -112,7 +113,8 @@ bool Pad::isBlocking() const
 
 bool Pad::setBlocked(bool blocked)
 {
-    return gst_pad_set_blocked(object<GstPad>(), blocked);
+    return gst_pad_add_probe(object<GstPad>(), GST_PAD_PROBE_TYPE_BLOCK,
+            NULL,NULL,NULL);
 }
 
 bool Pad::query(const QueryPtr & query)
