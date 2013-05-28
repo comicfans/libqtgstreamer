@@ -17,6 +17,7 @@
 #include "elementfactory.h"
 #include "element.h"
 #include <gst/gstelement.h>
+#include <gst/gstelementmetadata.h>
 #include <gst/gstelementfactory.h>
 #include <gst/gstutils.h>
 
@@ -45,32 +46,38 @@ QGlib::Type ElementFactory::elementType() const
 
 QString ElementFactory::longName() const
 {
-    return QString::fromUtf8(gst_element_factory_get_longname(object<GstElementFactory>()));
+    return QString::fromUtf8(gst_element_factory_get_metadata(
+                object<GstElementFactory>(),GST_ELEMENT_METADATA_LONGNAME));
 }
 
 QString ElementFactory::klass() const
 {
-    return QString::fromUtf8(gst_element_factory_get_klass(object<GstElementFactory>()));
+    return QString::fromUtf8(gst_element_factory_get_metadata(
+                object<GstElementFactory>(),GST_ELEMENT_METADATA_KLASS));
 }
 
 QString ElementFactory::description() const
 {
-    return QString::fromUtf8(gst_element_factory_get_description(object<GstElementFactory>()));
+    return QString::fromUtf8(gst_element_factory_get_metadata(
+                object<GstElementFactory>(),GST_ELEMENT_METADATA_DESCRIPTION));
 }
 
 QString ElementFactory::author() const
 {
-    return QString::fromUtf8(gst_element_factory_get_author(object<GstElementFactory>()));
+    return QString::fromUtf8(gst_element_factory_get_metadata(
+                object<GstElementFactory>(),GST_ELEMENT_METADATA_AUTHOR));
 }
 
 QString ElementFactory::documentationUri() const
 {
-    return QString::fromUtf8(gst_element_factory_get_documentation_uri(object<GstElementFactory>()));
+    return QString::fromUtf8(gst_element_factory_get_metadata(
+                object<GstElementFactory>(),GST_ELEMENT_METADATA_DOC_URI));
 }
 
 QString ElementFactory::iconName() const
 {
-    return QString::fromUtf8(gst_element_factory_get_icon_name(object<GstElementFactory>()));
+    return QString::fromUtf8(gst_element_factory_get_metadata(
+                object<GstElementFactory>(),GST_ELEMENT_METADATA_ICON_NAME));
 }
 
 uint ElementFactory::padTemplatesCount() const
@@ -90,12 +97,12 @@ bool ElementFactory::hasInterface(const char *interfaceName) const
 
 bool ElementFactory::canSinkCaps(const CapsPtr & caps) const
 {
-    return gst_element_factory_can_sink_caps(object<GstElementFactory>(), caps);
+    return gst_element_factory_can_sink_all_caps(object<GstElementFactory>(), caps);
 }
 
 bool ElementFactory::canSrcCaps(const CapsPtr & caps) const
 {
-    return gst_element_factory_can_src_caps(object<GstElementFactory>(), caps);
+    return gst_element_factory_can_src_all_caps(object<GstElementFactory>(), caps);
 }
 
 ElementPtr ElementFactory::create(const char *elementName) const
