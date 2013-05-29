@@ -16,6 +16,7 @@
 */
 #include "urihandler.h"
 #include "element.h"
+#include <gst/gst.h>
 #include <gst/gsturi.h>
 #include <QtCore/QUrl>
 #include <QtCore/QStringList>
@@ -31,7 +32,7 @@ bool UriHandler::protocolIsSupported(UriType type, const char *protocol)
 //static
 ElementPtr UriHandler::makeFromUri(UriType type, const QUrl & uri, const char *elementName)
 {
-    GstElement *e = gst_element_make_from_uri(static_cast<GstURIType>(type), uri.toEncoded(), elementName);
+    GstElement *e = gst_element_make_from_uri(static_cast<GstURIType>(type), uri.toEncoded(), elementName,NULL);
     if (e) {
         gst_object_ref_sink(e);
     }
@@ -46,9 +47,9 @@ UriType UriHandler::uriType() const
 QStringList UriHandler::supportedProtocols() const
 {
     QStringList result;
-    char **protocols = gst_uri_handler_get_protocols(object<GstURIHandler>());
+    const gchar * const *protocols = gst_uri_handler_get_protocols(object<GstURIHandler>());
     if (protocols) {
-        for (char **p = protocols; p && *p; ++p) {
+        for (const gchar * const * p = protocols; p && *p; ++p) {
             result.append(QString::fromUtf8(*p));
         }
     }
@@ -64,7 +65,8 @@ QUrl UriHandler::uri() const
 
 bool UriHandler::setUri(const QUrl & uri)
 {
-    return gst_uri_handler_set_uri(object<GstURIHandler>(), uri.toEncoded());
+    return gst_uri_handler_set_uri(
+            object<GstURIHandler>(), uri.toEncoded(),NULL);
 }
 
 } //namespace QGst
