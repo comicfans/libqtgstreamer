@@ -37,7 +37,7 @@ QueryType Query::type() const
 
 StructurePtr Query::internalStructure()
 {
-    GstStructure *structure = gst_query_get_structure(object<GstQuery>());
+    const GstStructure *structure = gst_query_get_structure(object<GstQuery>());
     return SharedStructure::fromMiniObject(structure, MiniObjectPtr(this));
 }
 
@@ -262,10 +262,10 @@ QList<Format> FormatsQuery::formats() const
 {
     guint cnt;
     QList<Format> formats;
-    gst_query_parse_formats_length(object<GstQuery>(), &cnt);
+    gst_query_parse_n_formats(object<GstQuery>(), &cnt);
     GstFormat f;
     for (uint i=0; i<cnt; i++) {
-        gst_query_parse_formats_nth(object<GstQuery>(), i, &f);
+        gst_query_parse_nth_format(object<GstQuery>(), i, &f);
         formats << static_cast<Format>(f);
     }
     return formats;
