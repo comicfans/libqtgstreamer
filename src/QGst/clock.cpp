@@ -18,6 +18,7 @@
 #include "clock.h"
 
 #include <QtCore/QTime>
+#include <gst/gst.h>
 #include <gst/gstclock.h>
 #include <gst/gstsystemclock.h>
 
