@@ -17,6 +17,7 @@
 
 #include "videooverlay.h"
 #include <gst/video/videooverlay.h>
+#include "../QGst/Message"
 #include <QtCore/QRect>
 
 namespace QGst {
@@ -54,7 +55,8 @@ bool VideoOverlay::setRenderRectangle(const QRect& rect)
 
 bool VideoOverlay::isPrepareWindowHandleMessage(const MessagePtr & msg)
 {
-    return gst_is_video_overlay_prepare_window_handle_message(msg);
+    return gst_is_video_overlay_prepare_window_handle_message(
+            (GstMessage*)msg);
 }
 
 } //namespace QGst
