@@ -232,10 +232,10 @@ SharedStructure::SharedStructure(SharedStructure::Data* data)
 {
 }
 
-StructurePtr SharedStructure::fromMiniObject(GstStructure *structure, const MiniObjectPtr & parent)
+StructurePtr SharedStructure::fromMiniObject(const GstStructure *structure, const MiniObjectPtr & parent)
 {
     SharedStructure::Data *d = new SharedStructure::Data;
-    d->structure = structure;
+    d->structure = const_cast<GstStructure *>(structure);
     d->miniobject = parent;
     return StructurePtr(new SharedStructure(d));
 }

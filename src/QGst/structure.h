@@ -146,7 +146,7 @@ private:
     QTGSTREAMER_NO_EXPORT
     SharedStructure(Data *data);
     QTGSTREAMER_NO_EXPORT
-    static StructurePtr fromMiniObject(GstStructure *structure, const MiniObjectPtr & parent);
+    static StructurePtr fromMiniObject(const GstStructure *structure, const MiniObjectPtr & parent);
     QTGSTREAMER_NO_EXPORT
     static StructurePtr fromCaps(GstStructure *structure, const CapsPtr & parent);
 

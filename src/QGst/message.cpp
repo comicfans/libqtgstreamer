@@ -45,7 +45,8 @@ MessageType Message::type() const
 
 StructurePtr Message::internalStructure()
 {
-    return SharedStructure::fromMiniObject(object<GstMessage>()->structure, MiniObjectPtr(this));
+    return SharedStructure::fromMiniObject(
+            gst_message_get_structure(object<GstMessage>()), MiniObjectPtr(this));
 }
 
 quint32 Message::sequenceNumber() const
@@ -414,7 +415,7 @@ LatencyMessagePtr LatencyMessage::create(const ObjectPtr & source)
 
 AsyncDoneMessagePtr AsyncDoneMessage::create(const ObjectPtr & source)
 {
-    return AsyncDoneMessagePtr::wrap(gst_message_new_async_done(source), false);
+    return AsyncDoneMessagePtr::wrap(gst_message_new_async_done(source,GST_CLOCK_TIME_NONE), false);
 }
 
 //********************************************************
