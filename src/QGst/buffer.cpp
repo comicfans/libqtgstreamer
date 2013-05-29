@@ -24,7 +24,7 @@ namespace QGst {
 
 BufferPtr Buffer::create(uint size)
 {
-    return BufferPtr::wrap(gst_buffer_try_new_and_alloc(size), false);
+    return BufferPtr::wrap(gst_buffer_new_and_alloc(size), false);
 }
 
 quint8 * Buffer::data() const
@@ -34,7 +34,7 @@ quint8 * Buffer::data() const
 
 quint32 Buffer::size() const
 {
-    return GST_BUFFER_SIZE(object<GstBuffer>());
+    return gst_buffer_get_size(object<GstBuffer>());
 }
 
 ClockTime Buffer::timeStamp() const
